@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/ERP.Ticketing.HttpApi.props" />
+</Project>
