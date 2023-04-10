@@ -111,10 +111,10 @@ public class TicketingCommentService
         return comment.Adapt<TicketCommentDto>();
     }
 
-    public async Task DeleteComment(Ticket ticket, Guid commentId, CancellationToken cancellationToken = default)
+    public async Task DeleteComment(Guid ticketId, Guid commentId, CancellationToken cancellationToken = default)
     {
         var comment = await _dbContext.TicketComments
-            .FirstOrDefaultAsync(x => x.Id == commentId && x.Ticket.Id == ticket.Id, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == commentId && x.Ticket.Id == ticketId, cancellationToken);
 
         if (comment == null)
         {

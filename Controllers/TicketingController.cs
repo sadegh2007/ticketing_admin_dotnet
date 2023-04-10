@@ -25,7 +25,7 @@ public class TicketingController : AuthApiControllerBase
     [HttpGet("{ticketId:guid}", Name = "get_ticket_by_id")]
     public async Task<IActionResult> GetTicket(Guid ticketId)
     {
-        var ticket = await _ticketingService.GetSingleTicket(ticketId);
+        var ticket = await _ticketingService.GetTicket(ticketId);
         return Ok(ticket);
     }
 

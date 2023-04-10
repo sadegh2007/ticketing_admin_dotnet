@@ -14,10 +14,20 @@ public static class TicketCommentMapper
         Message = comment.Message,
         Type = comment.Type,
         Creator = CreatorMapper.Mapper.Invoke(comment.Creator),
-        Files = comment.Files.AsQueryable().Select(FileMapper).ToList(),
+        // Replay = comment.Replay != null ? ReplyMapper.Invoke(comment.Replay) : null,
+        // Files = comment.Files.AsQueryable().AsExpandable().Select(FileMapper).ToList(),
         IsEdited = comment.IsEdited,
         CreatedAt = comment.CreatedAt,
         UpdatedAt = comment.UpdatedAt
+    };
+
+    public static Expression<Func<TicketComment, TicketCommentDto>> ReplyMapper => comment => new TicketCommentDto()
+    {
+        Id = comment.Id,
+        Message = comment.Message,
+        CreatedAt = comment.CreatedAt,
+        Creator = CreatorMapper.Mapper.Invoke(comment.Creator),
+        Type = comment.Type,
     };
 
     public static Expression<Func<TicketCommentFile, TicketCommentFileDto>> FileMapper => file => new TicketCommentFileDto()

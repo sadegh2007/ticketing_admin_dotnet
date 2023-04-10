@@ -78,20 +78,25 @@ public class TicketingService
             .SortAndPagedResultAsync(filters, cancellationToken);
     }
 
-    public async Task<Ticket> GetTicket(Guid ticketId, CancellationToken cancellationToken = default)
+    public async Task<TicketDto> GetTicket(Guid ticketId, CancellationToken cancellationToken = default)
     {
         var ticket = await _dbContext.Tickets
-            .Include(x => x.Department)
-            .Include(x => x.Creator)
-            .Include(x => x.Comments)
-            .ThenInclude(c => c.Creator)
-            .Include(x => x.Comments)
-            .ThenInclude(c => c.Files)
             .Include(t => t.Users)
             .ThenInclude(tc => tc.User)
+            
+            .Include(x => x.Department)
+            .Include(x => x.Creator)
+            
+            .Include(x => x.Comments)
+            .ThenInclude(c => c.Creator)
+            
+            .Include(x => x.Comments)
+            .ThenInclude(c => c.Files)
+
             .Include(x => x.Comments)
             .ThenInclude(c => c.Replay)
             .ThenInclude(cr => cr.Creator)
+            
             .Include(t => t.Status)
             
             .Include(x => x.UserHistories)
@@ -103,6 +108,7 @@ public class TicketingService
             .Where(x => x.Users.Any(u => u.UserId == _contextAccessor.HttpContext!.User.GetUserId()))
             .Where(x => x.TenantId == _contextAccessor.HttpContext!.GetTenantId())
             .IgnoreQueryFilters() // add this to remove soft delete filter
+            // .Select(TicketMapper.Mapper)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (ticket == null)
@@ -131,17 +137,6 @@ public class TicketingService
 
         ticket.Comments = ticket.Comments.OrderBy(x => x.CreatedAt).ToList();
 
-        return ticket;
-    }
-
-    public async Task<TicketDto> GetSingleTicket(Guid ticketId, CancellationToken cancellationToken = default)
-    {
-        var ticket = await GetTicket(ticketId, cancellationToken);
-
-        // var config = new TypeAdapterConfig();
-        // config.NewConfig<TicketComment, TicketCommentDto>();
-        // config.NewConfig<Ticket, TicketDto>();
-        
         return ticket.Adapt<TicketDto>();
     }
 

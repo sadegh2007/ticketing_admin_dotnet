@@ -30,9 +30,7 @@ public class TicketingCommentController: AuthApiControllerBase
     [HttpDelete("{commentId:guid}", Name = "delete_ticketing_comment")]
     public async Task<IActionResult> DeleteComment(Guid ticketId, Guid commentId)
     {
-        var ticket = await _ticketingService.GetTicket(ticketId);
-        await _commentService.DeleteComment(ticket, commentId);
-
+        await _commentService.DeleteComment(ticketId, commentId);
         return NoContent();
     }
     

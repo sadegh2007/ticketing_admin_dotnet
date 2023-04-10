@@ -6,12 +6,6 @@ namespace ERP.Ticketing.HttpApi.Features.Ticketing;
 
 public class TicketComment: IModel, ICreator, ICreateTime, IUpdateTime, ISoftDelete, IShamsiCreatedAt
 {
-    public TicketComment()
-    {
-        TicketCommentSeens = new Collection<TicketCommentSeen>();
-        Files = new List<TicketCommentFile>();
-    }
-    
     public Guid Id { get; set; }
     public Guid CreatorId { get; set; }
     public User Creator { get; set; }
@@ -22,8 +16,8 @@ public class TicketComment: IModel, ICreator, ICreateTime, IUpdateTime, ISoftDel
 
     public Guid? ReplayId { get; set; }
     public TicketComment? Replay { get; set; }
-    public ICollection<TicketCommentSeen> TicketCommentSeens { get; set; }
-    public ICollection<TicketCommentFile> Files { get; set; }
+    public ICollection<TicketCommentSeen> TicketCommentSeens { get; set; } = new List<TicketCommentSeen>();
+    public ICollection<TicketCommentFile> Files { get; set; } = new List<TicketCommentFile>();
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }

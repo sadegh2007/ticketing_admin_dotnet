@@ -1,3 +1,4 @@
+
 using System.Text.Json.Serialization;
 using ERP.Ticketing.HttpApi.Commons.Hubs;
 using ERP.Ticketing.HttpApi.Configuration;
@@ -26,6 +27,7 @@ builder.Services
     .AddAppDatabase(builder.Configuration)
     .AddAppAuthentication(builder.Configuration)
     .AddAppServices()
+    .AddOpenTelemetryService()
     .AddMapping()
     .AddFluentValidation();
 
